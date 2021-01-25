@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>* * Our Home * *</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,
+   initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript>
+    <link rel="stylesheet" href="assets/css/noscript.css" />
+  </noscript>
+  <style>
+    /* 모달 디자인 정의부 */
+    .modal {
+      display: none;
+      /* 숨김이 디폴트 값으로 들어감 */
+      position: fixed;
+      /* 지정된 위치에 고정 */
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 60%;
+    }
+
+    /*태그하기 스타일*/
+    #onImg {
+      position: relative;
+    }
+
+    .item {
+      position: absolute;
+      width: 35px;
+      height: 35px;
+    }
+  </style>
+</head>
+
+<body class="is-preload">
+  <div id="wrapper" class="fade-in">
+    <div id="intro">
+      <h1>This is<br />
+        interior</h1>
+      <p>Imaginary house</p>
+      <ul class="actions">
+        <li><a href="upload_tip.html" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+      </ul>
+    </div>
+    <header id="header">
+      <a href="upload_tip.html" class="logo">Interior registration </a>
+    </header>
+    <nav id="nav">
+      <ul class="links">
+        <li class="active"><a href="upload_tip.html"> interior</a></li>
+        <li><a href="Market.html"> Market</a></li>
+        <li><a href="Find a room.html">Find a room</a></li>
+      </ul>
+      <ul class="icons">
+        <li>
+          <t id="homemenu">
+            <t>
+        </li>
+        <li>
+          <a class="button" id="loginmenu">Login</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="main">
+
+      <div id="myModal" class="modal">
+
+        <!-- 추후에 게시글 모달 양식이 붙여넣어질 자리-->
+
+        <script id="dsq-count-scr"
+         src="//eolblog-1.disqus.com/count.js" async></script>
+
+      </div>
+      <section class="posts">
+        <!--게시글 양식이 붙여질 자리-->
+      </section>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+  <script
+   src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+   </script>
+  <script src="assets/js/JQuery.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="assets/js/jQuery.js"></script>
+  <script src="assets/js/initialize.js"></script>
+
+  <script>
+
+    var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
+    var firebaseDatabase; //파이어베이스 db 모듈 전역변수
+    var userInfo; //가입한 유저의 정보. object 타입
+
+    // 파이어베이스 초기화 코드
+    var firebaseConfig = {
+      // firebase_initial_code
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    firebaseEmailAuth = firebase.auth(); //파이어베이스 인증 객체
+    firebaseDatabase = firebase.database(); //데이터 베이스를 사용하기 위해 필요한 모듈
+
+    var user = firebase.auth().currentUser;
+
+    var tipRef = firebaseDatabase.ref('tip');  //tip 폴더를 레퍼런스로 지정
+    var tagRef = firebaseDatabase.ref('tag'); //tag 폴더를 레퍼런스로 지정
+    var tag_img_URL;
+
+    //세션 체크 함수
+    userSessionCheck();
+
+    //팁 리스트를 불러오는 함수
+    add_tip_list();
+
+    function add_tip_list() {
+      tipRef.on('child_added', on_tip_list);
+      //지정된 경로에 하위 항목마다 on_tip_list 함수가 한 번씩 발생 한 후,
+      //이후 하위 항목이 새로 추가될 때마다 다시 발생함.
+    }
+
+    function on_tip_list(data) {
+      console.log("**확인용 / 함수 호출에 성공하여 인테리어팁 리스트를 가져옴");
+      //지정한 하위 항목의 값을 저장하기 위하여 변수를 선언한 후 값 할당
+      var key = data.key;
+      var Data = data.val();
+      var tip_title = Data.tip_title;
+      var tip_text = Data.tip_text;
+      var tip_image = Data.imageURL;
+      var username = Data.username;
+
+      //업로드 된 게시글을 하나하나 게시판 화면에 붙여주기 위한 양식 선언
+      var html = "<article><header><h2><a>" + tip_title + "<br/></h2></header>"
+        + "<a class=\"image fit\"><img src=\"" + tip_image + "\" alt=\"\" /></a>"
+        + "<ul class=\"actions special\">"
+        + "<li><a class=\"button\" id=\"" + key
+        + "\" onclick=\"open_pop(this.id)\">More</a></li>"
+        //이때 버튼의 id를 각 게시물에 할당된 고유 키값으로 설정하여 클릭 함수의 인자값으로 넘겨줌.
+        + "</ul></article>";
+
+      $('.posts').append(html); //body 내의 posts 클래스 안에 html을 붙여넣어준다.
+
+    }
+
+    //페이지 호출 시 팝업 close
+    jQuery(document).ready(function () {
+      $('#myModal').hide();
+    });
+
+    //팝업 Open 기능
+    function open_pop(id) {
+      var tip_id = id;
+      var tip_title;
+      var tip_text;
+      var tip_image;
+      var username;
+      //지정한 하위 항목의 값을 저장하기 위하여 변수를 선언
+
+      //넘어온 게시글 고유 키 값과 데이터 베이스 내에 저장된 게시물
+      //고유 키값들을 비교하여 같은 것을 찾아 변수에 값 할당.
+      tipRef.child(tip_id).once('value', function (data) {
+        var Data = data.val();
+        tip_title = Data.tip_title;
+        tip_text = Data.tip_text;
+        tip_image = Data.imageURL;
+        username = Data.username;
+        tag_img_URL = Data.imageURL;
+      })
+
+      //More(더보기) 버튼을 클릭하였을 때 모달창 내에 붙여넣어줄 양식 선언
+      var modal_html = "<div class=\"modal-content\" >" +
+        "<h1 id=\"title\">" + tip_title + "</h1>" +
+        "<h5>* 글쓴이 *</h5>" +
+        "<h3 id=\"writer\">" + username + "</h3>" +
+        "<div class=\"field\">" +
+        "<h5>* 팁 *</h5>" +
+        "<h3 id=\"text\">" + tip_text + "</h3>" +
+        "</div>" +
+        "<div class=\"field\">" +
+        "<h5>* 관련 사진 *</h5>" +
+        "<div class=\"row\">" +
+        "<div class=\"col-6 col-12-xsmall\" id=\"onImg\">" +
+        "<img id=\"interior_img\" src=\"" + tip_image +
+        "\" alt=\"\" style=\"width:900px;height:600px;margin-top:10px;\"" +
+        "onmouseover=\"mouseOver()\" onmouseleave=\"mouseLeave()\"></img>" +
+        "<t_tag id=\"item\" style=\"display: none;\"></t_tag>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "<hr>" +
+        "<div class=\"field\">" +
+        "<h5 id=\"text\">댓글</h5>" +
+        "<div id=\"disqus_thread\"></div>" +
+        "<script>" +
+        "(function() {" +
+        "var d = document, s = d.createElement('script');" +
+        "s.src = 'https://eolblog-1.disqus.com/embed.js';" +
+        "s.setAttribute('data-timestamp', +new Date());" +
+        "(d.head || d.body).appendChild(s);" +
+        "})();" +
+        "<\/script>" +
+        "<noscript>Please enable JavaScript to view the" +
+        "<a href=\"https://disqus.com/?ref_noscript\">comments powered by Disqus.</a></noscript>" +
+        "</div>" +
+        "<div style=\"cursor:pointer;background-color:#DDDDDD;text-align: center;" +
+        "padding-bottom: 10px;padding-top: 10px;\"onClick=\"close_pop();\">" +
+        "<span class=\"pop_bt\" style=\"font-size: 13pt;\">닫기</span>" +
+        "</div></div>";
+
+      $('.modal').append(modal_html); //붙여넣어줌.
+      view_tag(); //인테리어팁은 이미지 태그 기능이 있어 세부정보 보기 화면에서 태그가 보일 수 있도록 태그 생성 함수 호출
+      $('#myModal').show(); //모달을 띄워줌.
+    };
+
+    //팝업 Close 기능
+    function close_pop(flag) {
+      $('.modal-content').remove();
+      $('#myModal').hide();
+    };
+
+    //태그 찾기 함수
+    function view_tag() {
+      console.log("**확인용 / 함수 호출에 성공하여 태그 리스트를 가져옴");
+      var x;
+      var y;
+      var value;
+
+      //태그 하위 항목 중 imageURL 값이 세부정보 화면에 띄워진 이미지의 URL과 같은 것들을 찾아냄
+      tagRef.orderByChild("imageURL").equalTo(tag_img_URL).on("child_added", function (snapshot) {
+        var key = snapshot.key;
+        var Data = snapshot.val();
+        x = Data.x;
+        y = Data.y;
+        value = Data.value;
+
+        make_tag(x, y, value); //태그 생성 함수 호출
+      })
+    }
+
+    function make_tag(x, y, value) {
+      //받아온 인자값을 바탕으로 태그를 찍어줄 위치를 찾아 태그를 찍어줌.
+      var tag = "<a href=\"https://search.shopping.naver.com/search/all.nhn?query=" +
+        value + "&cat_id=&frm=NVSHATC\"><img src=\"images/tagger.png\" style=\"position: absolute; left: " +
+        x + "; top: " + y + "; z-index: 1; width: 35px; height: 35px;\" onmouseover=\"mouseOver()\"></a>";
+      $('#item').append(tag);
+    }
+
+    //이미지 위에 마우스를 올렸을 때 태그 보이게
+    function mouseOver() {
+      document.getElementById('item').style.display = '';
+    }
+
+    //이미지 밖에 마우스가 있을 때
+    function mouseLeave() {
+      document.getElementById('item').style.display = 'none';
+    }
+
+  </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>* * Our Home * *</title>
+
+    <style rel="stylesheet">
+        @charset "UTF-8";
+        @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f8f8f8;
+        }
+
+        body .container {
+            position: relative;
+            overflow: hidden;
+            width: 700px;
+            height: 500px;
+            margin: 80px auto 0;
+            background-color: #ffffff;
+            -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 30px;
+        }
+
+        body .container .half {
+            float: left;
+            width: 50%;
+            height: 100%;
+            padding: 58px 40px 0;
+        }
+
+        body .container .half.bg {
+            background-image: url("images/login.jpg");
+            background-size: auto;
+
+            background-repeat: no-repeat;
+
+
+        }
+
+        body .container h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 23px;
+            text-align: center;
+            text-indent: 6px;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            color: #263238;
+        }
+
+        body .container .tabs {
+            width: 100%;
+            margin-bottom: 29px;
+            border-bottom: 1px solid #d9d9d9;
+        }
+
+        body .container .tabs .tab {
+            display: inline-block;
+            margin-bottom: -1px;
+            padding: 20px 15px 10px;
+            cursor: pointer;
+            letter-spacing: 0;
+            border-bottom: 1px solid #d9d9d9;
+            -moz-user-select: -moz-none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.1s ease-in-out;
+        }
+
+        body .container .tabs .tab a {
+            font-size: 11px;
+            text-decoration: none;
+            text-transform: uppercase;
+            color: #d9d9d9;
+            transition: all 0.1s ease-in-out;
+        }
+
+        body .container .tabs .tab.active a,
+        body .container .tabs .tab:hover a {
+            color: #263238;
+        }
+
+        body .container .tabs .tab.active {
+            border-bottom: 1px solid #263238;
+        }
+
+        body .container .content form {
+            position: relative;
+            height: 287px;
+        }
+
+        body .container .content label:first-of-type,
+        body .container .content input:first-of-type,
+        body .container .content .more:first-of-type {
+            -moz-animation: slideIn 0.4s cubic-bezier(0.37, 0.82, 0.2, 1);
+            -webkit-animation: slideIn 0.4s cubic-bezier(0.37, 0.82, 0.2, 1);
+            animation: slideIn 0.4s cubic-bezier(0.37, 0.82, 0.2, 1);
+        }
+
+        body .container .content label:nth-of-type(2),
+        body .container .content input:nth-of-type(2),
+        body .container .content .more:nth-of-type(2) {
+            -moz-animation: slideIn 0.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+            -webkit-animation: slideIn 0.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+            animation: slideIn 0.5s cubic-bezier(0.37, 0.82, 0.2, 1);
+        }
+
+        body .container .content label:nth-of-type(3),
+        body .container .content input:nth-of-type(3),
+        body .container .content .more:nth-of-type(3) {
+            -moz-animation: slideIn 0.6s cubic-bezier(0.37, 0.82, 0.2, 1);
+            -webkit-animation: slideIn 0.6s cubic-bezier(0.37, 0.82, 0.2, 1);
+            animation: slideIn 0.6s cubic-bezier(0.37, 0.82, 0.2, 1);
+        }
+
+        body .container .content label {
+            font-size: 12px;
+            color: #263238;
+            -moz-user-select: -moz-none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body .container .content label:not([for='remember']) {
+            display: none;
+        }
+
+        body .container .content input.inpt {
+            font-size: 14px;
+            display: block;
+            width: 100%;
+            height: 42px;
+            margin-bottom: 12px;
+            padding: 16px 13px;
+            color: #999999;
+            border: 1px solid #d9d9d9;
+            background: transparent;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+        }
+
+        body .container .content input.inpt::-webkit-input-placeholder {
+            font-size: 14px;
+            color: #999999;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body .container .content input.inpt:-moz-placeholder {
+            font-size: 14px;
+            color: #999999;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body .container .content input.inpt::-moz-placeholder {
+            font-size: 14px;
+            color: #999999;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body .container .content input.inpt:-ms-input-placeholder {
+            font-size: 14px;
+            color: #999999;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body .container .content input.inpt:focus {
+            border-color: #999999;
+        }
+
+        body .container .content input.submit {
+            font-size: 12px;
+            line-height: 42px;
+            display: block;
+            width: 100%;
+            height: 42px;
+            cursor: pointer;
+            vertical-align: middle;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #263238;
+            border: 1px solid #263238;
+            background: transparent;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+        }
+
+        body .container .content input.submit:hover {
+            background-color: #263238;
+            color: #ffffff;
+            -moz-transition: all 0.2s;
+            -o-transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+        }
+
+        body .container .content input:focus {
+            outline: none;
+        }
+
+        body .container .content .checkbox {
+            margin-top: 4px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            width: 0;
+            height: 0;
+            margin: 17px -1px;
+            padding: 0;
+            border: 0;
+        }
+
+        body .container .content .checkbox+label {
+            vertical-align: middle;
+            display: inline-block;
+            width: 50%;
+        }
+
+        body .container .content .checkbox+label:before {
+            content: "\A";
+            color: #999999;
+            font-family: Verdana;
+            font-weight: bold;
+            font-size: 8px;
+            line-height: 10px;
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            background: transparent;
+            border: 1px solid #d9d9d9;
+            width: 11px;
+            height: 11px;
+            margin: -2px 8px 0 0;
+        }
+
+        body .container .content .checkbox:checked+label:before {
+            content: "✓";
+        }
+
+        body .container .content .submit-wrap {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        body .container .content .submit-wrap a {
+            font-size: 12px;
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #999999;
+        }
+
+        body .container .content .submit-wrap a:hover {
+            text-decoration: underline;
+        }
+
+        body .container .content .signup-cont {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            0% {
+                filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+                opacity: 0;
+                margin-left: -320px;
+            }
+
+            100% {
+                filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+                opacity: 1;
+                margin-left: 0px;
+            }
+        }
+
+        @-webkit-keyframes slideIn {
+            0% {
+                filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+                opacity: 0;
+                margin-left: -320px;
+            }
+
+            100% {
+                filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+                opacity: 1;
+                margin-left: 0px;
+            }
+        }
+
+        .credits {
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: #999999;
+            font-size: 14px;
+            margin: 0 10px 10px 0;
+        }
+
+        .credits a {
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+            opacity: 0.8;
+            color: inherit;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="container">
+        <article class="half">
+            <h1>우리의 집</h1>
+            <div class="tabs">
+                <span class="tab signin active"><a href="#signin">Sign in</a></span>
+                <span class="tab signup"><a href="#signup">Sign up</a></span>
+            </div>
+            <div class="content">
+
+
+                <div class="signin-cont cont">
+
+
+                    <form class="form-signin">
+                        <input type="email" name="email" id="email" class="inpt" required="required"
+                            placeholder="Your email">
+                        <label for="email">Your email</label>
+                        <input type="password" name="password" id="password" class="inpt" required="required"
+                            placeholder="Your password">
+                        <label for="password">Your password</label>
+
+                        <div class="submit-wrap">
+                            <input type="button" class="submit" id="login_btn" value="Login"></button>
+
+                        </div>
+                    </form>
+
+
+
+                </div>
+
+
+                <div class="signup-cont cont">
+                    <form action="#" method="post" enctype="multipart/form-data">
+
+                        <input type="username" id="username" class="inpt" required="required" placeholder="Your name">
+
+                        <label for="name">Your name</label>
+
+                        <input type="email" id="join_email" class="inpt" required="required" placeholder="Your email">
+
+                        <label for="email">Your email</label>
+
+                        <input type="password" name="password" id="join_password" class="inpt" required="required"
+                            placeholder="Your password">
+
+                        <label for="password">Your password</label>
+
+
+                        <input type="password" id="confirmpassword" class="inpt" required="required"
+                            placeholder="Your Confirm password">
+
+                        <label for="password">Confirm Password</label>
+
+
+
+
+                        <div class="submit-wrap">
+                            <input type="button" value="Sign up" class="submit" id="join_btn">
+
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </article>
+        <div class="half bg"></div>
+
+    </section>
+
+
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--       <script src="/ie10-viewport-bug-workaround.js"></script>     명주가 처음에 줬을때 들어간거  지우면 지율이가 만든 부트스트랩 적용됨-->
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
+    <script>
+        var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
+        var firebaseDatabase; //파이어베이스 db 모듈 전역변수
+        var userInfo; //가입한 유저의 정보. object 타입
+
+        // 파이어베이스 초기화 코드
+        var firebaseConfig = {
+            // firebase_initial_code
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        firebaseEmailAuth = firebase.auth(); //파이어베이스 인증 객체
+        firebaseDatabase = firebase.database(); //데이터 베이스를 사용하기 위해 필요한 모듈
+
+        var isAdduser = false;
+
+        //로그인 성공했을 때
+        function loginSuccess(firebaseUser) {
+            alert("로그인 성공");
+            //메인 페이지로 이동
+            window.location.href = "/index.html"
+        }
+
+
+        /**
+  * initApp는 UI 이벤트 리스너 설정 및 Firebase 인증 리스너 등록을 처리합니다.
+  * - firebase.auth (). onAuthStateChanged :이 리스너는 사용자가 로그인하거나 out, UI가 업데이트되는 곳입니다.
+  */
+        function initApp() {
+            // 인증 상태 변경 내용을 확인
+            firebase.auth().onAuthStateChanged(function (user) {
+
+                if (user && isAdduser) {
+                    // 사용자 로그인
+                    var ref = firebaseDatabase.ref("users/" + user.uid); //저장될 곳을 users라는 부모 키를 레퍼런스로 지정.
+                    var username = $('#username').val();
+
+                    //저장 형식
+                    var obj = { username: username };
+                    ref.set(obj); // 고유한 자식 키가 하나 생셩이 되면서 json 삽입
+
+                    alert("가입성공");
+
+                    window.location.href = "/index.html"
+
+                } else {
+                    //사용자 로그아웃
+                }
+            });
+        }
+
+        //제이쿼리를 사용한다.
+        $(document).ready(function () {
+
+            //로그인 버튼 눌렀을 때
+            $(document).on('click', '#login_btn', function () {
+
+                //제이쿼리 선택자와 val() 함수를 이용해서 이메일,비밀번호 값을 가져온다.
+                var email = $('#email').val();
+                var password = $('#password').val();
+
+                //파이어베이스 이메일 로그인 함수(파이어베이스에서 기본으로 제공되는 함수)
+                firebaseEmailAuth.signInWithEmailAndPassword(email, password)
+                    .then(function (firebaseUser) {
+
+                        //성공하면 firebaseUser에 유저 정보 값이 담겨 넘어온다.
+                        loginSuccess(firebaseUser);
+
+                    })
+                    .catch(function (error) {
+                        // 실패했을 때 에러 처리
+                        alert(error);
+                        alert("로그인 실패");
+                        $('#email').val("");
+                        $('#password').val("");
+                    });
+
+            });
+        });
+
+
+        //회원가입 관련 코드
+        $(document).ready(function () {
+
+            //가입버튼 눌렀을 때
+            $(document).on('click', '#join_btn', function () {
+
+                var join_email = $('#join_email').val();
+                var join_password = $('#join_password').val();
+
+                //입력 정보 저장 및 회원가입 완료를 위한 코드
+                isAdduser = true;
+
+                firebaseEmailAuth.createUserWithEmailAndPassword(join_email, join_password).catch(function (error) {
+                    //에러가 발생했을 때
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+
+                    if (errorCode === 'auth/wrong-password') {
+                        alert('Wrong password.');
+                    } else {
+                        alert(errorMessage);
+                    }
+                    console.log(error);
+                    isAdduser = false;
+
+                });
+
+
+            });
+        });
+
+
+        $('#loginmenu').click(function () {
+            if (document.getElementById("loginmenu").textContent == "Logout") {
+                firebaseEmailAuth.signOut().then(function () {
+                    //alert("로그아웃 되었습니다")
+                    document.getElementById("loginmenu").textContent = "Login";
+                    document.getElementById("loginmenu").href = "#";
+                    document.getElementById("homemenu").textContent = "로그인하세요!";
+                    document.getElementById("homemenu").href = "#";
+                }).catch(function (error) {
+                    if (error) {
+                        alert("로그인 실패");
+                    }
+                });
+            } else {
+                window.location.href = "login.html"
+            }
+        })
+
+
+        window.onload = function () {
+            initApp();
+        };
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $('.tabs .tab').click(function () {
+            if ($(this).hasClass('signin')) {
+                $('.tabs .tab').removeClass('active');
+                $(this).addClass('active');
+                $('.cont').hide();
+                $('.signin-cont').show();
+            }
+            if ($(this).hasClass('signup')) {
+                $('.tabs .tab').removeClass('active');
+                $(this).addClass('active');
+                $('.cont').hide();
+                $('.signup-cont').show();
+            }
+        });
+        $('.container .bg').mousemove(function (e) {
+            var amountMovedX = (e.pageX * -1 / 30);
+            var amountMovedY = (e.pageY * -1 / 9);
+            $(this).css('background-position', amountMovedX + 'px ' + amountMovedY + 'px');
+        });
+    </script>
+</body>
+
+</html>

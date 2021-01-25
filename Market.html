@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>* * Our Home * *</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	<style>
+		/* 모달 디자인 정의부 */
+		.modal {
+			display: none;
+			/* 숨김이 디폴트 값으로 들어감 */
+			position: fixed;
+			/* 지정된 위치에 고정 */
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 60%;
+		}
+	</style>
+</head>
+
+<body class="is-preload">
+
+	<div id="wrapper" class="fade-in">
+		<div id="intro">
+			<h1>This is<br />
+				market</h1>
+			<p>Imaginary house</p>
+			<ul class="actions">
+				<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+			</ul>
+		</div>
+
+		<header id="header">
+			<a href="upload_sub.html" class="logo">Sales registration </a>
+		</header>
+
+		<nav id="nav">
+			<ul class="links">
+				<li><a href="index.html"> interior</a></li>
+				<li class="active"><a href="Market.html"> Market</a></li>
+				<li><a href="Find a room.html">Find a room</a></li>
+			</ul>
+
+
+			<ul class="icons">
+				<li>
+					<t id="homemenu">
+					</t>
+				</li>
+				<li>
+					<a class="button" id="loginmenu">Login</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+			<div class="field">
+				<label> Search </label>
+				<!--검색창 구현-->
+				<input type="text" placeholder="검색창" name="subject" id="search" class="form-control" />
+				<br>
+				<input type="button" onclick="search_sub();" value="Search">
+				<input type="button" onclick="search_cancle();" value="Cancle">
+			</div>
+
+			<!-- The Modal -->
+			<div id="myModal" class="modal">
+
+				<!-- 추후에 게시글 모달 양식이 붙여넣어질 자리-->
+
+				<script id="dsq-count-scr" src="//eolblog-1.disqus.com/count.js" async></script>
+			</div>
+
+			<section class="posts">
+				<!--게시글 양식이 붙여질 자리-->
+			</section>
+
+		</div>
+	</div>
+	<!-- Footer -->
+
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="assets/js/JQuery.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="assets/js/jQuery.js"></script>
+	<script src="assets/js/initialize.js"></script>
+
+	<script>
+
+		var firebaseEmailAuth; //파이어베이스 email 인증 모듈 전역변수
+		var firebaseDatabase; //파이어베이스 db 모듈 전역변수
+		var userInfo; //가입한 유저의 정보. object 타입
+
+		// 파이어베이스 초기화 코드
+		var firebaseConfig = {
+			// firebase_initial_code
+		};
+
+		firebase.initializeApp(firebaseConfig);
+		firebaseEmailAuth = firebase.auth(); //파이어베이스 인증 객체
+		firebaseDatabase = firebase.database(); //데이터 베이스를 사용하기 위해 필요한 모듈
+
+		var user = firebase.auth().currentUser;
+		var subRef = firebaseDatabase.ref('sub'); //sub 폴더를 레퍼런스로 지정
+
+		//세션 체크 함수
+		userSessionCheck();
+
+		//중고 물품 리스트를 불러오는 함수
+		add_sub_list();
+
+		function add_sub_list() {
+			subRef.on('child_added', on_sub_list);
+			//지정된 경로에 하위 항목마다 on_tip_list 함수가 한 번씩 발생 한 후, 이후 하위 항목이 새로 추가될 때마다 다시 발생함.
+		}
+
+
+		function on_sub_list(data) {
+			console.log("**확인용 / 함수 호출에 성공하여 중고 물품 리스트를 가져옴");
+			//지정한 하위 항목의 값을 저장하기 위하여 변수를 선언한 후 값 할당
+			var key = data.key;
+			var Data = data.val();
+			var sub_title = Data.sub_title;
+			var sub_text = Data.sub_text;
+			var sub_image = Data.imageURL;
+			var username = Data.username;
+
+			//업로드 된 게시글을 하나하나 게시판 화면에 붙여주기 위한 양식 선언
+			var html = "<article class = \"subcontain\"><header><h2><a>" + sub_title + "<br/></h2></header>"
+				+ "<a class=\"image fit\"><img src=\"" + sub_image + "\" alt=\"\" /></a>"
+				+ "<ul class=\"actions special\">"
+				+ "<li><a class=\"button\" id=\"" + key + "\" onclick=\"open_pop(this.id)\">More</a></li>"
+				//이때 버튼의 id를 각 게시물에 할당된 고유 키값으로 설정하여 클릭 함수의 인자값으로 넘겨줌.
+				+ "</ul></article>";
+
+			$('.posts').append(html); //body 내의 posts 클래스 안에 html을 붙여넣어준다.
+
+		}
+
+		//페이지 호출 시 팝업 close
+		jQuery(document).ready(function () {
+			$('#myModal').hide();
+		});
+
+		//팝업 Open 기능
+		function open_pop(id) {
+			var sub_id = id;
+			var sub_title;
+			var sub_text;
+			var sub_image;
+			var username;
+			//지정한 하위 항목의 값을 저장하기 위하여 변수를 선언
+
+			//넘어온 게시글 고유 키 값과 데이터 베이스 내에 저장된 게시물 고유 키값들을 비교하여 같은 것을 찾아 변수에 값 할당.
+			subRef.child(sub_id).once('value', function (data) {
+				var Data = data.val();
+				sub_title = Data.sub_title;
+				sub_text = Data.sub_text;
+				sub_image = Data.imageURL;
+				username = Data.username;
+			})
+
+			//More(더보기) 버튼을 클릭하였을 때 모달창 내에 붙여넣어줄 양식 선언
+			var modal_html = "<div class=\"modal-content\">" +
+				"<h1 id=\"title\">" + sub_title + "</h1>" +
+				"<h5>* 글쓴이 *</h5>" +
+				"<h3 id=\"writer\">" + username + "</h3>" +
+				"<div class=\"field\">" +
+				"<h5>* 물건 설명 *</h5>" +
+				"<h3 id=\"text\">" + sub_text + "</h3>" +
+				"</div>" +
+				"<div class=\"field\">" +
+				"<h5>* 물건 사진 *</h5>" +
+				"<img id=\"interior_img\" src=\"" + sub_image + "\" alt=\"\" style=\"width:300px;height:300px;margin-top:10px;\"></img>" +
+				"</div>" +
+				"<hr>" +
+				"<div class=\"field\">" +
+				"<h5 id=\"text\">댓글</h5>" +
+				"<div id=\"disqus_thread\"></div>" +
+				"<script>" +
+				"(function() {" +
+				"var d = document, s = d.createElement('script');" +
+				"s.src = 'https://eolblog-1.disqus.com/embed.js';" +
+				"s.setAttribute('data-timestamp', +new Date());" +
+				"(d.head || d.body).appendChild(s);" +
+				"})();" +
+				"<\/script>" +
+				"<noscript>Please enable JavaScript to view the <a href=\"https://disqus.com/?ref_noscript\">comments powered by Disqus.</a></noscript>" +
+				"</div>" +
+				"<div style=\"cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;\"onClick=\"close_pop();\">" +
+				"<span class=\"pop_bt\" style=\"font-size: 13pt;\">닫기</span>" +
+				"</div></div>";
+
+			$('.modal').append(modal_html); //모달 붙여넣어줌
+			$('#myModal').show(); //모달 띄우기
+		};
+		//팝업 Close 기능
+		function close_pop(flag) {
+			$('.modal-content').remove();
+			$('#myModal').hide();
+		};
+
+
+		//검색 기능 함수
+		function search_sub() {
+			var search_sub = $("#search").val(); //검색창 내에 입력한 값을 받아와 저장한다.
+			var sub_title;
+			var sub_image;
+			var key;
+
+			//sub 폴더 하위 항목 중 title이 검색창 내에 입력한 값으로 시작하는 것을 찾아냄. (제목 양식을 맞춰쓰도록 하였다.)
+			subRef.orderByChild("sub_title").startAt(search_sub).endAt(search_sub + '\uf8ff').once("child_added", function (snapshot) {
+				key = snapshot.key;
+				Data = snapshot.val();
+				sub_title = Data.sub_title;
+				sub_image = Data.imageURL;
+			})
+
+
+			var search_html = "<article class = \"subcontain\"><header><h2><a href=\"#\">" + sub_title + "<br/></h2></header>"
+				+ "<a href=\"#\" class=\"image fit\"><img src=\"" + sub_image + "\" alt=\"\" /></a>"
+				+ "<ul class=\"actions special\">"
+				+ "<li><a href=\"#\" class=\"button\" id=\"" + key + "\" onclick=\"open_pop(this.id)\">More</a></li>"
+				+ "</ul></article>";
+
+			$('.subcontain').remove(); //기존 게시글 목록을 모두 지우고
+			$('.posts').append(search_html); //body 내의 posts 클래스 안에 검색된 게시글을 다시 붙여준다.
+
+		}
+
+		function search_cancle() {
+			$("#search").val(''); //검색창 내의 값을 비워줌.
+			$('.subcontain').remove(); //기존 게시글 목록을 모두 지우고
+			add_sub_list(); //게시글 목록 모두 불러옴.
+		}
+		//취소 버튼 눌렀을 떄 함수
+
+	</script>
+
+</body>
+
+</html>

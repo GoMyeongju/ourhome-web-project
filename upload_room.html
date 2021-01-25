@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<title>* * Our Home * *</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+
+<body class="is-preload">
+
+	<div id="wrapper">
+
+		<header id="header">
+			<a href="/Find a room.html" class="logo">Back</a>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li><a href="index.html"> interior</a></li>
+				<li><a href="Market.html"> Market</a></li>
+				<li class="active"><a href="#">Find a room</a></li>
+
+			</ul>
+
+
+			<ul class="icons">
+				<li>
+					<t id="homemenu">
+					</t>
+				</li>
+				<li>
+					<a class="button" id="loginmenu">Login</a>
+				</li>
+			</ul>
+		</nav>
+
+
+		<!-- Main -->
+		<div id="main">
+
+			<section class="post">
+				<header class="major">
+
+					<h1>Room <br />
+						Registration</h1>
+					<p>Sell ​​unused or non-living rooms</p>
+				</header>
+
+				<div class="field">
+					<label> Title </label>
+					<input type="text" placeholder="제목을 입력하세요. " name="subject" id="room_title" class="form-control" />
+				</div>
+				<br>
+
+				<div class="field">
+					<label> address </label>
+					<input type="text" id="room_address" placeholder="주소를 입력하세요.">
+					<input type="button" onclick="search_address()" value="Search address">
+
+				</div>
+
+				<div class="field">
+					<br>
+					<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+
+				</div>
+
+				<div class="field">
+					<label> Text </label>
+					<textarea cols="10" placeholder="내용을 입력하세요. " name="content" id="room_text"
+						class="form-control"></textarea>
+
+				</div>
+
+				<div class="field">
+
+					<label> Attachments </label>
+					<input type="file" id="room_file_btn" name="file_upload">
+
+				</div>
+
+
+				<br>
+				<div class="field">
+					<input type="button" onclick="room_upload()" value="Registration">
+
+				</div>
+
+			</section>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=670c758f997a255e56f227574e03e30f&libraries=services"></script>
+	<script src="assets/js/upload_room.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="assets/js/JQuery.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="assets/js/jQuery.js"></script>
+	<script src="assets/js/initialize.js"></script>
+
+	<script>
+
+		firebase.initializeApp(firebaseConfig);
+		firebaseEmailAuth = firebase.auth(); //파이어베이스 인증 객체
+		firebaseDatabase = firebase.database(); //파이어베이스 데이터베이스 객체
+
+		//세션 체크 함수
+		userSessionCheck();
+
+		//주소 검색 관련 함수 코드
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+			mapOption = {
+				center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+				level: 5 // 지도의 확대 레벨
+			};
+
+		//지도를 미리 생성
+		var map = new daum.maps.Map(mapContainer, mapOption);
+		//주소-좌표 변환 객체를 생성
+		var geocoder = new daum.maps.services.Geocoder();
+		//마커를 미리 생성
+		var marker = new daum.maps.Marker({
+			position: new daum.maps.LatLng(37.537187, 127.005476),
+			map: map
+		});
+
+		
+		//주소 검색 관련 함수
+		function search_address() {
+			new daum.Postcode({
+				oncomplete: function (data) {
+					var addr = data.address; // 최종 주소 변수
+
+					// 주소 정보를 해당 필드에 넣는다.
+					document.getElementById("room_address").value = addr;
+					// 주소로 상세 정보를 검색
+					geocoder.addressSearch(data.address, function (results, status) {
+						// 정상적으로 검색이 완료됐으면
+						if (status === daum.maps.services.Status.OK) {
+
+							var result = results[0]; //첫번째 결과의 값을 활용
+
+							// 해당 주소에 대한 좌표를 받아서
+							var coords = new daum.maps.LatLng(result.y, result.x);
+							// 지도를 보여준다.
+							mapContainer.style.display = "block";
+							map.relayout();
+							// 지도 중심을 변경한다.
+							map.setCenter(coords);
+							// 마커를 결과값으로 받은 위치로 옮긴다.
+							marker.setPosition(coords);
+						}
+					});
+				}
+			}).open();
+		}
+
+		//방 올리기 버튼 클릭시 호출되는 함수
+		function room_upload() {
+			var room_file_btn = document.getElementById("room_file_btn");
+			var file = room_file_btn.files[0];//첨부파일 가지고 오기
+
+
+			if (room_file_btn.value != '') {//첨부파일이 선택되어 있는 경우
+				var storageRef = firebase.storage().ref('/room_image/' + file.name);
+				var task = storageRef.put(file);
+				//각 앨리먼트 내의 값 가져오기
+				var room_title = $("#room_title").val();
+				var room_text = $("#room_text").val();
+				var room_address = $("#room_address").val();
+				var room_location;
+
+				var geocoder = new daum.maps.services.Geocoder();
+
+				// 주소로 좌표를 검색합니다
+				geocoder.addressSearch(room_address, function (result, status) {
+					// 정상적으로 검색이 완료됐으면
+					if (status === daum.maps.services.Status.OK) {
+						room_location = new daum.maps.LatLng(result[0].y, result[0].x);
+					}
+				});
+
+
+				task.then(function (snapshot) {
+					firebase.storage().ref('/room_image/' + file.name).getDownloadURL().then(function (imageURL) {
+						//이미지 저장을 위해 스토리지에 이미지를 먼저 저장
+						//형식은 room_image 폴더 내에 저장할 파일 이름을 하위로
+						//이미지 저장 완료 후 제공되는 DownloadURL을 받아와 데이터 베이스에 함께 저장
+						var roomRef = firebaseDatabase.ref("room").push();
+						var obj = {
+							userkey: loginUserKey,
+							username: username,
+							room_title: room_title,
+							imageURL: imageURL,
+							room_address: room_address,
+							room_location: room_location,
+							room_text: room_text
+						}
+						roomRef.set(obj); //object 형식으로 데이터를 구성하고 저장
+						alert("글이 저장되었습니다."); //저장되었음을 알리고
+						window.location.href = "/index.html" //메인 화면으로 돌아가기
+
+					}).catch(function (error) {
+						alert(error.message);
+					});
+				}, function (error) {
+					alert("글이 정상적으로 저장되지 않았습니다. : " + error.message);
+					return false;
+				});
+			} else {
+				alert("양식을 모두 만족하여야 합니다. 빠짐 없이 작성해주세요!");
+			}
+
+		}
+
+
+	</script>
+</body>
+
+</html>

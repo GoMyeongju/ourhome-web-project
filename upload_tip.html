@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+	<title>* * Our Home * *</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	<style>
+		/* 모달 디자인 정의부 */
+		.modal {
+			display: none;
+			/* 숨김이 디폴트 값으로 들어감 */
+			position: fixed;
+			/* 지정된 위치에 고정 */
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 60%;
+		}
+
+		/*태그하기 스타일*/
+		.onImg {
+			position: relative;
+		}
+
+		.item {
+			position: absolute;
+			width: 35px;
+			height: 35px;
+		}
+	</style>
+</head>
+
+
+<body class="is-preload">
+
+
+	<div id="wrapper">
+		<header id="header">
+			<a href="index.html" class="logo">Back</a>
+		</header>
+
+		<nav id="nav">
+			<ul class="links">
+				<li class="active"><a href="#"> interior</a></li>
+				<li><a href="Market.html"> Market</a></li>
+				<li><a href="Find a room.html">Find a room</a></li>
+			</ul>
+
+			<ul class="icons">
+				<li>
+					<t id="homemenu">
+					</t>
+				</li>
+				<li>
+					<a class="button" id="loginmenu">Login</a>
+				</li>
+			</ul>
+		</nav>
+
+		<div id="main">
+			<section class="post">
+				<header class="major">
+					<h1>interior <br />
+						Registration</h1>
+					<p>Let's show your own interior.</p>
+				</header>
+				<div class="field">
+					<label> Title </label>
+					<input type="text" placeholder="제목을 입력하세요. " name="subject" id="tip_title" class="form-control" />
+				</div>
+				<br>
+				<div class="field">
+					<label> Text </label>
+					<textarea cols="10" placeholder="내용을 입력하세요. " name="content" id="tip_text"
+						class="form-control"></textarea>
+				</div>
+
+				<div class="field">
+					<br>
+					<label> Attachments </label>
+					<input type="file" id="tip_file_btn" name="file_upload">
+				</div>
+				<br>
+				<div class="field">
+					<input type="button" onclick="tip_upload()" value="Registration">
+				</div>
+
+				<!-- 모달창 -->
+				<div id="tagModal" class="modal">
+
+					<!-- 모달 내용 -->
+					<div class="modal-content" id="tag-modal-content">
+						<!--여기부터 수정 시작-->
+						<!-- 이미지 -->
+						<div class="row">
+
+							<div class="onImg" id="onImgt">
+								<!-- <img class="" src="images/login_img.jpg" alt="" height="600" onmousedown="addTag()"> -->
+								<!--<img src="images/tagger.png" class="item" style="position:absolute; left: 251px; top: 662px;">-->
+								<input type="button" class="button primary small" onclick="check()" value="태그 추가하기"
+									style="position: absolute; bottom: 530px; right: 30px;">
+							</div>
+						</div>
+						<!-- 태그내용 -->
+						<div class="row">
+							<div class="col-1">
+							</div>
+							<div class="col-6 col-12-xsmall">
+								<input type="text" id="product_tag" placeholder="제품명을 입력하세요" />
+							</div>
+							<div>
+								<input type="button" id="saveButton" class="button primary disabled" onclick="saveTag()"
+									value="저 장" />
+							</div>
+						</div>
+						<!-- 태그내용 끝 -->
+						<!-- 이미지 끝 -->
+						<!--여기까지-->
+						<br><br>
+						<div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;"
+							onClick="close_pop();">
+							<span class="pop_bt" style="font-size: 13pt;">
+								닫기
+							</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+
+
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=670c758f997a255e56f227574e03e30f&libraries=services"></script>
+	<script src="assets/js/upload_room.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="assets/js/JQuery.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="assets/js/jQuery.js"></script>
+
+	<script src="assets/js/initialize.js"></script>
+
+
+
+
+
+	<script>
+
+
+		firebase.initializeApp(firebaseConfig);
+
+		firebaseEmailAuth = firebase.auth(); //파이어베이스 인증 객체
+		firebaseDatabase = firebase.database(); //파이어베이스 데이터베이스 객체
+		var tag_img;
+
+		//세션 체크 함수
+		userSessionCheck();
+
+		//인테리어 팁 버튼 클릭시 호출되는 함수
+		function tip_upload() {
+			var tip_file_btn = document.getElementById("tip_file_btn");
+			var file = tip_file_btn.files[0];//첨부파일 가지고 오기
+
+
+			if (tip_file_btn.value != '') {//첨부파일이 선택되어 있는 경우
+				var storageRef = firebase.storage().ref('/tip_image/' + file.name);
+				var task = storageRef.put(file);
+
+				//각 앨리먼트 내의 값 가져오기
+				var tip_title = $("#tip_title").val();
+				var tip_text = $("#tip_text").val();
+
+				task.then(function (snapshot) {
+					firebase.storage().ref('/tip_image/' + file.name).getDownloadURL().then(function (imageURL) {
+						//이미지 저장을 위해 스토리지에 이미지를 먼저 저장
+						//형식은 room_image 폴더 내에 저장할 파일 이름을 하위로
+						//이미지 저장 완료 후 제공되는 DownloadURL을 받아와 데이터 베이스에 함께 저장
+						tag_img = imageURL;
+						var tipRef = firebaseDatabase.ref("tip").push();
+						var obj = {
+							userkey: loginUserKey,
+							username: username,
+							tip_title: tip_title,
+							imageURL: imageURL,
+							tip_text: tip_text
+						}
+						tipRef.set(obj); //object 형식으로 데이터를 구성하고 저장
+						alert("글이 저장되었습니다."); //저장되었음을 알리고
+
+						open_tag(imageURL);	//태그 추가하기 모달(이미지 주소 넣어줘야함)
+
+
+					}).catch(function (error) {
+						alert(error.message);
+					});
+				}, function (error) {
+					alert("글이 정상적으로 저장되지 않았습니다. : " + error.message);
+					return false;
+				});
+			} else {
+				alert("양식을 모두 만족하여야 합니다. 빠짐 없이 작성해주세요!");
+			}
+
+		}
+
+		//여기부터 추가
+		var taggingCheck = false;   //태그 할수있는지 체크
+		var sucSave = true;
+
+		//저장할 값
+		var x;  //x좌표
+		var y;  //y좌표
+		var value;  //태그 내용
+
+		//페이지 호출 시 팝업 close
+		jQuery(document).ready(function () {
+			$('#tagModal').hide();
+		});
+
+		//태그 팝업 팝업 Open
+		function open_tag(id) {
+			var img = "<img id=\"img_form\" src=\"" + id + "\" align=\"center\" width=\"900\" height=\"600\" onmousedown=\"addTag()\">"
+			$('.onImg').append(img); //body 내의 room_list 클래스 안에 html을 붙여넣어준다.
+
+			$('#tagModal').show();
+		};
+		//팝업 close 기능
+		function close_pop() {
+			$('#tagModal').hide();
+			window.location.href = "/index.html"
+		};
+
+		//태그 추가하기(마우스로 이미지 클릭)
+		function addTag() {
+			if (event.button == 0 && taggingCheck == true) {  // 왼쪽버튼
+				var w = (document.body.clientWidth - document.getElementById('img_form').width) / 2;
+				w = ($('#tag-modal-content').outerWidth(true) - $('#tag-modal-content').width()) / 2;
+				x = event.clientX + scrollX - w + "px";
+				y = event.clientY + document.getElementById('tagModal').scrollTop - (document.getElementById('img_form').height / 2) + "px";
+				var img =
+					"<img src=\"images/tagger.png\" class=\"item\" style=\"position: absolute; left: " + x + "; top: " + y + "; z-index: 1;\">";
+				$('.onImg').append(img);
+				taggingCheck = false;
+				sucSave = false;
+				document.getElementById('saveButton').classList = "button primary";
+
+			}
+		};
+
+		//태그 추가하기 버튼(이제 태그 추가 가능)
+		function check() {
+			if (sucSave == true) {
+				taggingCheck = true;
+			}
+		}
+
+		//저장버튼
+		function saveTag() {
+			document.getElementById('saveButton').classList = "button primary disabled";
+			sucSave = true;
+			value = $("#product_tag").val();
+
+
+			//태그 좌표 및 설명 데이터 베이스에 저장하기 위한 코드 구현
+			var tagRef = firebaseDatabase.ref("tag");
+			var tag = tagRef.push();
+
+			var obj = {
+				imageURL: tag_img,
+				x: x,
+				y: y,
+				value: value
+			};
+
+			tag.set(obj);
+
+			alert("태그가 저장되었습니다.");
+			$('#product_tag').val("");
+		}
+
+
+	</script>
+
+
+</body>
+
+</html>
